@@ -1,0 +1,67 @@
+//Creare una semplice struct alunno che contiene il nome, il cognome e il voto. Dopo inserire da 1 a 20 alunni al massimo e permettere di effettuare una ricerca per cognome dell’alunno. Se ci sono più alunni con lo stesso cognome visualizzarli entrambi.
+#include <stdio.h>
+#include <string.h>
+#define MAX 20
+
+typedef struct
+        {       
+        char cognome[30];
+        char nome[30];
+        int voto;
+        } studente;
+
+int main()
+        {
+        studente s[MAX];
+        char nome_utente[20];
+        int n, i, ricerca, close=0;
+        int trovato;
+        int j = 0;
+        char cognome_alunno[30];
+        printf("\nBenvenuto! Questo programma ti permetterà di memorizzare l'elenco dei tuoi alunni e dei loro voti.\nPer cominciare, come ti chiami?  ");
+        fgets(nome_utente, MAX, stdin);
+        nome_utente[strlen(nome_utente)-1] = '\0';
+        
+        do
+        { printf("\nOttimo Prof. %s, adesso inserisci il numero di alunni (MAX 20):\t", nome_utente);
+        scanf("%d", &n);
+        } while (n<1 || n>MAX);
+        
+        for(i=0; i<=(n-1); i++)
+                {
+                printf("\n======================================================================\n");
+                printf("\nInserisci COGNOME:  ");
+                scanf("%s", s[i].cognome);
+                printf("\nInserisci NOME:  ");
+                scanf("%s", s[i].nome);
+                printf("\nInserisci VOTO:  ");
+                scanf("%d", &s[i].voto);
+                
+                }
+                printf("\n==============================RICERCA=================================\n");
+        
+        
+        
+        while (close!=1)
+                {
+                printf("\nInserisci il cognome dell'alunno da cercare:\t");
+                scanf("%s", cognome_alunno);
+                for (trovato=0, j=0; trovato!=1, j<=n; j++)
+                        {
+                        if (strcmp(s[j].cognome, cognome_alunno)==0)
+                        { printf("\nAlunno trovato in posizione %d.\n%s %s\nVoto: %d\n", j, s[j].cognome, s[j].nome, s[j].voto);
+                        trovato = 1;
+                        } else continue;
+                        }
+                if (trovato==0)
+                        printf("\nSpiacente. Alunno non trovato. "); 
+                
+                printf("Premere qualsiasi numero per continuare o 1 per terminare l'esecuzione:\t");
+                scanf("%d", &close);                        
+                }
+                
+       return 0;
+       }
+        
+
+                
