@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define M 10
+
+typedef struct studente {
+char **nc;
+char **esami;
+} studente;
+
+
+void aggiungi_studente (studente*, int pos); //AGGIUNGE STUDENTE (INPUT TASTIERA, POSIZIONE GIA DATA DAL MAIN)
+
+void aggiungi_esame (studente*, char*, char*, char*); //AGGIUNGI ESAME ALLO STUDENTE DI NOME E COGNOME DATO IN INPUT
+
+int elimina_esame (studente*, char*); //ELIMINA L'ESAME (DATO IN INPUT DAL MAIN) DA TUTTI GLI ALUNNI
+
+void main()
+{
+int pos = 0;
+studente *studenti;
+studenti = calloc(M, sizeof(studente));
+aggiungi_studente(studenti, pos);
+aggiungi_esame(studenti, "Mario", "Rossi", "Matematica");
+printf("\nALUNNO %s, ESAMI: %s\n", studenti[pos].nc[0], studenti[pos].esami[0]);
+elimina_esame(studenti, "Matematica");
+}
+
+
+void aggiungi_studente (studente *studenti, int pos)
+{
+        studenti[pos].nc = calloc(2, sizeof(char*)); //ERRORE: NON HO ALLOCATO LE 2 RIGHE
+        studenti[pos].nc[0] = calloc(21, sizeof(char*)); //ERRORE: NON HO MAI MESSO char* (la star dp char)
+        
+        if (studenti[pos].nc[0] == NULL)
+                { fprintf(stderr, "\nERRORE DI ALLOCAZIONE NOME\n");
+                exit(-1);        }
+                
+        studenti[pos].nc[1] = calloc(21, sizeof(char*));
+        if (studenti[pos].nc[1] == NULL)
+                { fprintf(stderr, "\nERRORE DI ALLOCAZIONE COGNOME\n");
+                exit(-1);        }
+                
+        studenti[pos].esami = calloc(30, sizeof(char*));
+        
+        int i;
+        for (i=0; i<30; i++)
+                {       studenti[pos].esami[i] = calloc(100, sizeof(char*));
+                        if (studenti[pos].esami[i] == NULL)
+                                {       fprintf(stderr, "\nerrore allocazione esami-\n");
+                                        exit(-1);
+                                        }
+                                        }
+        
+        printf("\nINSERISCI NOME: ");
+        fgets(studenti[pos].nc[0], 20, stdin); //non ho tolto l'invio con strlen ecc ma babe superfluo.
+        studenti[pos].nc[0][strlen(studenti[pos].nc[0]) - 1] = '\0';
+        
+        
+        printf("\nINSERISCI COGNOME: ");
+        fgets(studenti[pos].nc[1], 20, stdin);
+        studenti[pos].nc[1][strlen(studenti[pos].nc[1]) - 1] = '\0';
+        
+}
+
+
+
+void aggiungi_esame (studente* alunno, char* nome, char* cognome, char* esame)
+{
+        int i, j;
+        
+        for (i=0; i<10; i++)
+                { if (strcmp(nome, alunno[i].nc[0]) == 0) //ERRORE: ho messo !=0
+                        printf("\nNome trov");
+                        for (j=0; j<10; j++)
+                                { if(strcmp(cognome, alunno[i].nc[1]) == 0)
+                                        strcpy(alunno[i].esami[0], esame);
+                                }
+                        }
+                        
+}
+
+
+int elimina_esame(studente* studente, char* materia)
+{       int y = 0;
+        int i, j;
+        
+        for (i=0; i<M; i++)
+        {       
+                for (j=0; j<30; j++)
+                        { if (strcmp(materia, studente[i].esami[j]) == 0)
+                                {
+                                free(studente[i].esami[j]);
+                                y++; }
+                                }
+                                }
+                                
+        return y;
+        
+}
+                
+        
+                
+                
+                
