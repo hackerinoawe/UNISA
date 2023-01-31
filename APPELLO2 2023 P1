@@ -18,35 +18,40 @@ int elimina_esame (studente*, char*); //ELIMINA L'ESAME (DATO IN INPUT DAL MAIN)
 
 void main()
 {
-int pos = 0;
 studente *studenti;
 studenti = calloc(M, sizeof(studente));
-aggiungi_studente(studenti, pos);
+aggiungi_studente(studenti, 0);
+aggiungi_studente(studenti, 1);
+aggiungi_studente(studenti, 2);
 aggiungi_esame(studenti, "Mario", "Rossi", "Matematica");
-printf("\nALUNNO %s, ESAMI: %s\n", studenti[pos].nc[0], studenti[pos].esami[0]);
+printf("\nALUNNO %s, ESAMI: %s\n", studenti[1].nc[0], studenti[1].esami[0]);
 elimina_esame(studenti, "Matematica");
+printf("\nALUNNO %s, ESAMI: %s\n", studenti[1].nc[0], studenti[1].esami[0]);
 }
 
 
 void aggiungi_studente (studente *studenti, int pos)
 {
         studenti[pos].nc = calloc(2, sizeof(char*)); //ERRORE: NON HO ALLOCATO LE 2 RIGHE
-        studenti[pos].nc[0] = calloc(21, sizeof(char*)); //ERRORE: NON HO MAI MESSO char* (la star dp char)
+        studenti[pos].nc[0] = calloc(21, sizeof(char)); //ERRORE: NON HO MAI MESSO char* (la star dp char)
         
         if (studenti[pos].nc[0] == NULL)
                 { fprintf(stderr, "\nERRORE DI ALLOCAZIONE NOME\n");
                 exit(-1);        }
                 
-        studenti[pos].nc[1] = calloc(21, sizeof(char*));
+        studenti[pos].nc[1] = calloc(21, sizeof(char));
         if (studenti[pos].nc[1] == NULL)
                 { fprintf(stderr, "\nERRORE DI ALLOCAZIONE COGNOME\n");
                 exit(-1);        }
                 
-        studenti[pos].esami = calloc(30, sizeof(char*));
+        studenti[pos].esami = calloc(30, sizeof(char*)); //QUI RICORDO CHE NON MISI IL CONTROLLO MA BABE ERA SUPERFLUO
+        if (studenti[pos].esami == NULL)
+                { fprintf(stderr, "\nERRORE DI ALLOCAZIONE ESAME\n");
+                exit(-1);        }
         
         int i;
         for (i=0; i<30; i++)
-                {       studenti[pos].esami[i] = calloc(100, sizeof(char*));
+                {       studenti[pos].esami[i] = calloc(100, sizeof(char));
                         if (studenti[pos].esami[i] == NULL)
                                 {       fprintf(stderr, "\nerrore allocazione esami-\n");
                                         exit(-1);
@@ -70,32 +75,39 @@ void aggiungi_esame (studente* alunno, char* nome, char* cognome, char* esame)
 {
         int i, j;
         
-        for (i=0; i<10; i++)
-                { if (strcmp(nome, alunno[i].nc[0]) == 0) //ERRORE: ho messo !=0
-                        printf("\nNome trov");
-                        for (j=0; j<10; j++)
-                                { if(strcmp(cognome, alunno[i].nc[1]) == 0)
+        for (i=0; i<3; i++)
+                { if (strcmp(nome, alunno[i].nc[0]) == 0) //ERRORE: ho messo  SEMPRE !=0
+                        {printf("\nAlunno trovato\n");
+                        if(strcmp(cognome, alunno[i].nc[1]) == 0)  //errore perchè il cognome è collegato alla posizone del nome, nn devo scorrerli tutti 
+                                        {
                                         strcpy(alunno[i].esami[0], esame);
+                                        printf("\nEsame aggiunto correttamente.\n");
+                                        break; //NON HO MESSO IL BREAK, LA FUNZIONE SI RIPETE INUTILMENTE
+                                        }
                                 }
                         }
-                        
 }
+                        
+
 
 
 int elimina_esame(studente* studente, char* materia)
 {       int y = 0;
         int i, j;
         
-        for (i=0; i<M; i++)
-        {       
-                for (j=0; j<30; j++)
-                        { if (strcmp(materia, studente[i].esami[j]) == 0)
+        for (i=0; i<3; i++)
+        {           
+               for (j=0; j<30; j++)
+                        {                                           
+                        if ((strcmp(materia, studente[i].esami[j]))== 0)
                                 {
                                 free(studente[i].esami[j]);
                                 y++; }
-                                }
-                                }
-                                
+                              
+                        }
+        }
+               
+                               
         return y;
         
 }
